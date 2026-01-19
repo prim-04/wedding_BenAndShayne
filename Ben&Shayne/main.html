@@ -406,23 +406,26 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
         document.addEventListener("DOMContentLoaded", () => {
             const music = document.getElementById("bg-music");
             const toggle = document.getElementById("music-toggle");
-
+        
             music.volume = 0.5;
-            window.addEventListener("load", () => {
+        
+            /* Resume music if allowed (from envelope tap) */
+            if (sessionStorage.getItem("musicAllowed") === "true") {
                 music.play().catch(() => {});
-            });
-            document.body.addEventListener("click", () => {
-                if (music.paused) {
-                    music.play().catch(() => {});
-                }
-            }, { once: true });
-
+                toggle.textContent = "🔊";
+            } else {
+                toggle.textContent = "🔇";
+            }
+        
+            /* Music toggle (ONLY user-triggered play) */
             toggle.addEventListener("click", (e) => {
                 e.stopPropagation();
-
+        
                 if (music.paused) {
-                    music.play();
-                    toggle.textContent = "🔊";
+                    music.play().then(() => {
+                        sessionStorage.setItem("musicAllowed", "true");
+                        toggle.textContent = "🔊";
+                    }).catch(() => {});
                 } else {
                     music.pause();
                     toggle.textContent = "🔇";
@@ -430,6 +433,7 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
             });
         });
         </script>
+
 
 <button id="music-toggle" class="music-float">🔊</button>
 </body>
