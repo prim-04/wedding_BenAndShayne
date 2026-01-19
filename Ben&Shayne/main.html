@@ -402,23 +402,38 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
             ));
         });
     </script>
-
-    <script>
+<script>
 document.addEventListener("DOMContentLoaded", () => {
-    const music = document.getElementById("bg-music");
-    const toggle = document.getElementById("music-toggle");
-
+    const music = new Audio("music/background.m4a");
+    music.loop = true;
     music.volume = 0.5;
 
-    // Try to autoplay muted (some browsers allow this)
-    music.muted = true;
-    music.play().catch(() => {
-        console.log("Autoplay blocked, waiting for user interaction.");
-    });
+    // Only autoplay if user allowed it on index.html
+    if (sessionStorage.getItem("musicAllowed") === "true") {
+        music.play().catch(() => {
+            // Some browsers may still block — iOS requires first tap
+            console.log("Autoplay blocked. Tap to play.");
+        });
+    }
 
-    // Handle first user interaction for iOS / autoplay blocked
+    // Optional: create a toggle button
+    const toggle = document.getElementById("music-toggle");
+    if (toggle) {
+        toggle.addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (music.paused) {
+                music.play().then(() => {
+                    toggle.textContent = "🔊";
+                }).catch(() => {});
+            } else {
+                music.pause();
+                toggle.textContent = "🔇";
+            }
+        });
+    }
+
+    // iOS fallback: unmute/play on first tap if blocked
     function enableMusic() {
-        music.muted = false;
         music.play().catch(() => {});
         window.removeEventListener("click", enableMusic);
         window.removeEventListener("touchstart", enableMusic);
@@ -426,31 +441,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.addEventListener("click", enableMusic);
     window.addEventListener("touchstart", enableMusic);
-
-    /* Music toggle (ONLY user-triggered play/pause) */
-    toggle.addEventListener("click", (e) => {
-        e.stopPropagation(); // prevent triggering the global click
-
-        if (music.paused) {
-            music.play().then(() => {
-                sessionStorage.setItem("musicAllowed", "true");
-                toggle.textContent = "🔊";
-            }).catch(() => {});
-        } else {
-            music.pause();
-            toggle.textContent = "🔇";
-        }
-    });
-
-    // Optional: restore previous state if user allowed music before
-    if (sessionStorage.getItem("musicAllowed") === "true") {
-        music.muted = false;
-        music.play().then(() => {
-            toggle.textContent = "🔊";
-        }).catch(() => {});
-    }
 });
 </script>
+
 
 
 <button id="music-toggle" class="music-float">🔊</button>
