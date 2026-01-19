@@ -166,27 +166,27 @@ body::after {
             <h1>You are invited</h1>
         </div>
     </div>
-</button
-<script>
-function openEnvelope() {
-    const envelope = document.getElementById("envelope");
-    const music = new Audio("music/background.m4a");
-    music.loop = true;
-
-    music.play().then(() => {
-        sessionStorage.setItem("musicAllowed", "true");
-    });
-
-    document.getElementById("envelope").classList.add("open");
-    if (!envelope.classList.contains("open")) {
-        envelope.classList.add("open");
-
-        setTimeout(() => {
-            window.location.href = "main.html";
-        }, 2200);
-    }
-}
-</script>
+</butto>
 </body>
+    <script>
+        function openEnvelope() {
+            const envelope = document.getElementById("envelope");
+            const music = new Audio("music/background.m4a");
+            music.loop = true;
+        
+            music.play().then(() => {
+                sessionStorage.setItem("musicAllowed", "true");
+            });
+        
+            document.getElementById("envelope").classList.add("open");
+            if (!envelope.classList.contains("open")) {
+                envelope.classList.add("open");
+        
+                setTimeout(() => {
+                    window.location.href = "main.html";
+                }, 2200);
+            }
+        }</script>
 </html>
+
 
