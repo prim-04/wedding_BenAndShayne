@@ -64,23 +64,17 @@ body::after {
 
 /* ===== ENVELOPE ===== */
 .envelope-wrapper {
-    position: relative;
-    width: 380px;
-    height: 260px;
+    background: transparent;
+    border: none;
+    padding: 0;
     cursor: pointer;
-    perspective: 1000px;
+    touch-action: manipulation;
 }
 
-.envelope {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    background: #BFDDE6;
-    border-radius: 10px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-    overflow: hidden;
+.envelope-wrapper * {
+    pointer-events: none; /* allows button to receive tap */
 }
-
+    
 /* Envelope flap */
 .envelope::before {
     content: "";
@@ -99,7 +93,11 @@ body::after {
 .envelope.open::before {
     transform: rotateX(180deg);
 }
-
+    
+.envelope-wrapper {
+    position: relative;
+    z-index: 9999;
+}
 /* ===== INVITATION CARD ===== */
 .invitation-card {
     position: absolute;
@@ -162,35 +160,33 @@ body::after {
 </head>
 
 <body>
-
-<div class="envelope-wrapper fade-in"onclick="openEnvelope()">
+<button class="envelope-wrapper fade-in" onclick="openEnvelope()">
     <div class="envelope" id="envelope">
         <div class="invitation-card">
             <h1>You are invited</h1>
-            <button class="open-btn" onclick="goToInvitation(event)">Open Invitation</button>
         </div>
     </div>
-</div>
-
+</button
 <script>
 function openEnvelope() {
     const envelope = document.getElementById("envelope");
+    const music = new Audio("music/background.m4a");
+    music.loop = true;
 
-    // Open only once
+    music.play().then(() => {
+        sessionStorage.setItem("musicAllowed", "true");
+    });
+
+    document.getElementById("envelope").classList.add("open");
     if (!envelope.classList.contains("open")) {
         envelope.classList.add("open");
+
+        setTimeout(() => {
+            window.location.href = "main.html";
+        }, 2200);
     }
 }
-function goToInvitation(event) {
-    event.stopPropagation(); // prevent envelope click
-    const envelope = document.getElementById("envelope");
-
-    envelope.classList.add("open");
-
-    setTimeout(() => {
-        window.location.href = "main.html";
-    }); // smoother & faster
-    }
 </script>
 </body>
 </html>
+
