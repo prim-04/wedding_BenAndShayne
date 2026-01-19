@@ -229,38 +229,30 @@ body::after {
     </div>
 </button>
     
-    <script>
-    function openEnvelope() {
-        const envelope = document.getElementById("envelope");
-    
-        // Prevent double-click
-        if (envelope.classList.contains("open")) return;
-    
-        // Play music (iOS requires user gesture — this is one)
-        const music = new Audio("music/wedding.m4a");
-        music.loop = true;
-        music.volume = 0.5;
-    
-        music.play()
-            .then(() => {
-                sessionStorage.setItem("musicAllowed", "true");
-            })
-            .catch(() => {
-                // iOS may block — that's okay
-            });
-    
-        // Open envelope
-        envelope.classList.add("open");
-    
-        // Redirect after animation
-        setTimeout(() => {
-            window.location.href = "main.html";
-        }, 2200);
-    }
-    </script>
+<script>
+function openEnvelope() {
+    const envelope = document.getElementById("envelope");
+
+    // Prevent double-click
+    if (envelope.classList.contains("open")) return;
+
+    // Mark that user interacted (for music autoplay)
+    sessionStorage.setItem("musicAllowed", "true");
+
+    // Open envelope animation
+    envelope.classList.add("open");
+
+    // Redirect after animation
+    setTimeout(() => {
+        window.location.href = "main.html";
+    }, 2200);
+}
+</script>
+
 
 </body>
 </html>
+
 
 
 
