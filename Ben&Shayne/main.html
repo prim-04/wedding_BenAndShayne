@@ -403,36 +403,53 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     </script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const music = document.getElementById("bg-music");
-            const toggle = document.getElementById("music-toggle");
-        
-            music.volume = 0.5;
-        
-            /* Resume music if allowed (from envelope tap) */
-            if (sessionStorage.getItem("musicAllowed") === "true") {
-                music.play().catch(() => {});
+document.addEventListener("DOMContentLoaded", () => {
+    const music = document.getElementById("bg-music");
+    const toggle = document.getElementById("music-toggle");
+
+    music.volume = 0.5;
+
+    // Try to autoplay muted (some browsers allow this)
+    music.muted = true;
+    music.play().catch(() => {
+        console.log("Autoplay blocked, waiting for user interaction.");
+    });
+
+    // Handle first user interaction for iOS / autoplay blocked
+    function enableMusic() {
+        music.muted = false;
+        music.play().catch(() => {});
+        window.removeEventListener("click", enableMusic);
+        window.removeEventListener("touchstart", enableMusic);
+    }
+
+    window.addEventListener("click", enableMusic);
+    window.addEventListener("touchstart", enableMusic);
+
+    /* Music toggle (ONLY user-triggered play/pause) */
+    toggle.addEventListener("click", (e) => {
+        e.stopPropagation(); // prevent triggering the global click
+
+        if (music.paused) {
+            music.play().then(() => {
+                sessionStorage.setItem("musicAllowed", "true");
                 toggle.textContent = "🔊";
-            } else {
-                toggle.textContent = "🔇";
-            }
-        
-            /* Music toggle (ONLY user-triggered play) */
-            toggle.addEventListener("click", (e) => {
-                e.stopPropagation();
-        
-                if (music.paused) {
-                    music.play().then(() => {
-                        sessionStorage.setItem("musicAllowed", "true");
-                        toggle.textContent = "🔊";
-                    }).catch(() => {});
-                } else {
-                    music.pause();
-                    toggle.textContent = "🔇";
-                }
-            });
-        });
-        </script>
+            }).catch(() => {});
+        } else {
+            music.pause();
+            toggle.textContent = "🔇";
+        }
+    });
+
+    // Optional: restore previous state if user allowed music before
+    if (sessionStorage.getItem("musicAllowed") === "true") {
+        music.muted = false;
+        music.play().then(() => {
+            toggle.textContent = "🔊";
+        }).catch(() => {});
+    }
+});
+</script>
 
 
 <button id="music-toggle" class="music-float">🔊</button>
