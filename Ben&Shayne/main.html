@@ -404,27 +404,24 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
     </script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-    const music = new Audio("music/wedding.m4a");
-    music.loop = true;
+    const music = document.getElementById("bg-music");
+    const toggle = document.getElementById("music-toggle");
+
     music.volume = 0.5;
 
-    // Only autoplay if user allowed it on index.html
+    // If the user clicked the envelope, try autoplay
     if (sessionStorage.getItem("musicAllowed") === "true") {
         music.play().catch(() => {
-            // Some browsers may still block — iOS requires first tap
-            console.log("Autoplay blocked. Tap to play.");
+            console.log("Autoplay blocked — tap to play.");
         });
     }
 
-    // Optional: create a toggle button
-    const toggle = document.getElementById("music-toggle");
+    // Optional: toggle button
     if (toggle) {
         toggle.addEventListener("click", (e) => {
             e.stopPropagation();
             if (music.paused) {
-                music.play().then(() => {
-                    toggle.textContent = "🔊";
-                }).catch(() => {});
+                music.play().then(() => { toggle.textContent = "🔊"; });
             } else {
                 music.pause();
                 toggle.textContent = "🔇";
@@ -432,7 +429,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // iOS fallback: unmute/play on first tap if blocked
+    // iOS fallback: first tap anywhere
     function enableMusic() {
         music.play().catch(() => {});
         window.removeEventListener("click", enableMusic);
