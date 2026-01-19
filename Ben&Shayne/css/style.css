@@ -736,18 +736,20 @@ h3 {
     padding: 0 50px;
   }
 }
-
+.logo-img img {
+  width: 100%;
+}
 @media (max-width: 500px) {
   /* line 30, ../../Arafath/CL/CL september/212. Wedding/HTML/scss/_header.scss */
   .header-area .main-header-area .logo-img img {
-    width: 90px;
+    width: 60%;
   }
 }
 
 @media (min-width: 200px) and (max-width: 500px) {
   /* line 30, ../../Arafath/CL/CL september/212. Wedding/HTML/scss/_header.scss */
   .header-area .main-header-area .logo-img img {
-    width: 90px;
+    width: 70%;
   }
 }
 
