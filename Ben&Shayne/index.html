@@ -42,18 +42,6 @@ body::after {
     pointer-events: none;
 }
 
-body::before {
-    top: 0;
-    left: 0;
-    background-image: url("img/flowers/floral-top-left.png");
-}
-
-body::after {
-    bottom: 0;
-    right: 0;
-    background-image: url("img/flowers/floral-bottom-right.png");
-}
-
 /* ===== FADE IN ===== */
 .fade-in {
     animation: fadeIn 1.6s ease forwards;
@@ -131,16 +119,7 @@ body::after {
 }
 
 /* ===== BOTTOM FOLD ===== */
-.envelope-bottom {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 50%;
-    background: #d0bee7;
-    clip-path: polygon(0 0, 50% 100%, 100% 0);
-    z-index: 2;
-}
+.envelope-bottom { position: absolute; bottom: 0; width: 100%; height: 60%; background: #d0bee7; clip-path: polygon(0 100%, 50% 45%, 100% 100%); z-index: 2; }
 
 /* ===== INVITATION CARD ===== */
 .invitation-card {
@@ -275,6 +254,7 @@ body::after {
 
 </body>
 </html>
+
 
 
 
