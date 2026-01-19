@@ -229,13 +229,20 @@ body::after {
 </head>
 
 <body>
-<button class="envelope-wrapper fade-in" onclick="openEnvelope()">
+<button class="envelope-wrapper" onclick="openEnvelope()">
     <div class="envelope" id="envelope">
+        <div class="envelope-flap"></div>
+        <div class="envelope-left"></div>
+        <div class="envelope-right"></div>
+        <div class="envelope-bottom"></div>
+
         <div class="invitation-card">
-            <h1>You are invited</h1>
+            <h1>You are Invited</h1>
         </div>
     </div>
-</button><script>
+</button>
+    
+    <script>
         function openEnvelope() {
             const envelope = document.getElementById("envelope");
             const music = new Audio("music/background.m4a");
@@ -256,6 +263,7 @@ body::after {
         }</script>
 </body>
 </html>
+
 
 
 
